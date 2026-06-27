@@ -1,0 +1,6 @@
+{
+  "name": "Catalyst AI",
+  "description": "An advanced agentic productivity application and cozy companion that deconstructs tasks, schedules decompression buffers, analyzes energy waves, and parses unstructured brain-dumps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
