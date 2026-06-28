@@ -377,45 +377,7 @@ export default function ProfilePage({
                     })}
                   </div>
 
-                  {/* Gemini Mascot generator form */}
-                  <div className={`border-t pt-4 space-y-2 ${isSketch ? 'border-[#111111]' : 'border-gray-100'}`}>
-                    <h4 className="text-xs font-black uppercase flex items-center gap-1">
-                      <Sparkles className="w-4 h-4" /> Gemini Mascot Generator
-                    </h4>
-                    <p className="text-[10px] text-gray-500 font-bold">
-                      Select an animal type and let Gemini configure a customized chubby animal companion state matching your needs!
-                    </p>
 
-                    <form onSubmit={handleCustomMascotSubmit} className="flex gap-2">
-                      <select
-                        value={customAnimalInput}
-                        onChange={e => setCustomAnimalInput(e.target.value)}
-                        disabled={generatingMascot}
-                        className={styles.input + " flex-1 font-black cursor-pointer"}
-                      >
-                        <option value="cat">🐱 Cat</option>
-                        <option value="dog">🐶 Dog</option>
-                        <option value="rabbit">🐰 Rabbit</option>
-                        <option value="fox">🦊 Fox</option>
-                        <option value="panda">🐼 Panda</option>
-                        <option value="red panda">🦊 Red Panda</option>
-                        <option value="tiger">🐯 Tiger</option>
-                        <option value="penguin">🐧 Penguin</option>
-                      </select>
-
-                      <button
-                        type="submit"
-                        disabled={generatingMascot}
-                        className={`text-[11px] font-black px-4 py-1.5 rounded-xl cursor-pointer transition-colors whitespace-nowrap ${
-                          isSketch 
-                            ? 'bg-[#111111] text-white border-2 border-[#111111] hover:bg-gray-800' 
-                            : 'bg-[#8C9A86] hover:bg-[#778671] text-white'
-                        }`}
-                      >
-                        {generatingMascot ? 'Making Cute...' : 'Make Cute! ✨'}
-                      </button>
-                    </form>
-                  </div>
                 </motion.div>
               )}
 

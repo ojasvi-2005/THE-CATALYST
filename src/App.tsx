@@ -699,8 +699,12 @@ export default function App() {
           
           {/* Logo brand at top */}
           <div className="flex items-center gap-3 px-2 pt-2">
-            <div className={`w-10 h-10 rounded-2xl ${theme.logoColor} flex items-center justify-center font-bold text-lg`}>
-              🐱
+            <div className={`w-10 h-10 rounded-2xl ${theme.logoColor} flex items-center justify-center font-bold text-lg overflow-hidden`}>
+              {userProfilePic ? (
+                <img src={userProfilePic} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                "🐱"
+              )}
             </div>
             <div>
               <span className={`text-sm font-extrabold block ${theme.headingColor}`}>Pixel Flow</span>
