@@ -175,6 +175,29 @@ export default function FocusPage({
       : activeTheme === 'lavender'
       ? "rounded-xl bg-[#F3EEFA] text-[#635B8F] border border-[#E2DAF2]"
       : "rounded-xl bg-[#FAF8F5] text-[#5D5750] border border-[#E9E4DB]", // minimal
+    innerCard: isSketch
+      ? "bg-white border-2 border-[#111111]"
+      : activeTheme === 'night'
+      ? "bg-[#242A3E] border border-slate-700 text-white"
+      : activeTheme === 'forest'
+      ? "bg-[#2D3F35] border border-emerald-900/30 text-[#ECF2EF]"
+      : activeTheme === 'lavender'
+      ? "bg-white border border-[#E9E4EB] text-[#3D3A45]"
+      : "bg-white border border-[#E9E4DB] text-[#2C2A29]",
+    innerBg: isSketch
+      ? "bg-gray-50"
+      : activeTheme === 'night'
+      ? "bg-[#181B28]"
+      : activeTheme === 'forest'
+      ? "bg-[#1C2822]"
+      : "bg-[#FAF8F5]",
+    iconBg: isSketch
+      ? "bg-white text-[#111111]"
+      : activeTheme === 'night'
+      ? "bg-slate-800 text-white border border-slate-700"
+      : activeTheme === 'forest'
+      ? "bg-[#314339] text-[#ECF2EF]"
+      : "bg-white border border-[#E9E4DB]",
     input: isSketch
       ? "bg-white border-2 border-[#111111] rounded-xl px-2.5 py-1.5 focus:outline-none focus:bg-gray-50"
       : activeTheme === 'night'
@@ -193,9 +216,9 @@ export default function FocusPage({
     <div id="focus-page-workspace" className={`h-full w-full overflow-y-auto pb-8 pr-1 space-y-5 select-none ${styles.container}`}>
       
       {/* 1. Header with Settings Cog */}
-      <div className={`flex items-center justify-between ${isSketch ? 'border-2 border-[#111111] rounded-2xl bg-white p-4 shadow-[3px_3px_0px_0px_rgba(17,17,17,1)]' : 'border border-[#E9E4DB] rounded-3xl bg-white p-5 shadow-xs'} shrink-0`}>
+      <div className={`flex items-center justify-between ${isSketch ? 'border-2 border-[#111111] rounded-2xl bg-white p-4 shadow-[3px_3px_0px_0px_rgba(17,17,17,1)]' : styles.card} shrink-0`}>
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)]' : 'rounded-2xl bg-[#FAF8F5] border border-[#E9E4DB]'} flex items-center justify-center`}>
+          <div className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)]' : 'rounded-2xl'} ${styles.iconBg} flex items-center justify-center`}>
             <Clock className="w-5 h-5 text-current" />
           </div>
           <div>
@@ -206,7 +229,7 @@ export default function FocusPage({
 
         <button 
           onClick={() => setShowConfigDrawer(!showConfigDrawer)}
-          className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] active:translate-y-0.5 active:shadow-none' : 'rounded-2xl border border-[#E9E4DB] bg-white hover:bg-[#FAF8F5]'} flex items-center justify-center cursor-pointer transition-all`}
+          className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] active:translate-y-0.5 active:shadow-none' : 'rounded-2xl'} ${styles.iconBg} flex items-center justify-center cursor-pointer transition-all`}
         >
           <Settings className="w-5 h-5" />
         </button>
@@ -293,10 +316,10 @@ export default function FocusPage({
           </div>
 
           {/* 3. Focus / Rest Timer Switch + Majestic Countdown Core */}
-          <div className={`${isSketch ? 'border-2 border-[#111111] rounded-3xl p-6 bg-white shadow-[4px_4px_0px_0px_rgba(17,17,17,1)]' : 'border border-[#E9E4DB] rounded-3xl p-6 bg-white shadow-xs'} flex flex-col items-center justify-center space-y-6 flex-1 min-h-[320px]`}>
+          <div className={`${isSketch ? 'border-2 border-[#111111] rounded-3xl p-6 bg-white shadow-[4px_4px_0px_0px_rgba(17,17,17,1)]' : styles.card} flex flex-col items-center justify-center space-y-6 flex-1 min-h-[320px]`}>
             
             {/* Pill mode selector switch */}
-            <div className={`flex ${isSketch ? 'border-2 border-[#111111]' : 'border border-[#E9E4DB]'} p-1 bg-[#FAF8F5] rounded-full max-w-xs w-full`}>
+            <div className={`flex ${isSketch ? 'border-2 border-[#111111] bg-[#FAF8F5]' : `border ${activeTheme === 'night' ? 'border-slate-700 bg-[#181B28]' : activeTheme === 'forest' ? 'border-emerald-900/30 bg-[#1C2822]' : 'border-[#E9E4DB] bg-[#FAF8F5]'}`} p-1 rounded-full max-w-xs w-full`}>
               <button
                 onClick={() => handleModeChange(true)}
                 className={`flex-1 text-xs font-black py-2 px-4 rounded-full transition-all cursor-pointer ${
@@ -361,7 +384,7 @@ export default function FocusPage({
                 {/* Tiny circular play overlay button inside timer circle */}
                 <button
                   onClick={() => setIsRunning(!isRunning)}
-                  className={`mt-2 w-8 h-8 rounded-full ${isSketch ? 'border-2 border-[#111111] bg-white shadow-[1px_1px_0px_0px_rgba(17,17,17,1)] active:translate-y-0.5 active:shadow-none' : 'border border-[#E9E4DB] bg-white hover:bg-[#FAF8F5] shadow-xs'} flex items-center justify-center cursor-pointer`}
+                  className={`mt-2 w-8 h-8 rounded-full ${isSketch ? 'border-2 border-[#111111] bg-white shadow-[1px_1px_0px_0px_rgba(17,17,17,1)] active:translate-y-0.5 active:shadow-none' : activeTheme === 'night' ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-white' : activeTheme === 'forest' ? 'border-emerald-950/20 bg-[#314339] hover:bg-[#3a5043] text-white' : 'border-[#E9E4DB] bg-white hover:bg-[#FAF8F5] text-slate-700'} flex items-center justify-center cursor-pointer`}
                 >
                   {isRunning ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
                 </button>
@@ -373,7 +396,7 @@ export default function FocusPage({
               <button
                 onClick={handleReset}
                 title="Reset session"
-                className={`p-3 ${isSketch ? 'border-2 border-[#111111] bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] active:translate-y-0.5 active:shadow-none' : 'border border-[#E9E4DB] bg-white hover:bg-[#FAF8F5] rounded-full shadow-xs'} cursor-pointer`}
+                className={`p-3 ${isSketch ? 'border-2 border-[#111111] bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] active:translate-y-0.5 active:shadow-none' : activeTheme === 'night' ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-white rounded-full' : activeTheme === 'forest' ? 'border-emerald-950/20 bg-[#314339] hover:bg-[#3a5043] text-white rounded-full' : 'border-[#E9E4DB] bg-white hover:bg-[#FAF8F5] text-slate-700 rounded-full'} cursor-pointer`}
               >
                 <RotateCcw className="w-4.5 h-4.5" />
               </button>
@@ -405,7 +428,15 @@ export default function FocusPage({
           
           {/* 4. Active Studying Companion Bubble */}
           <div className="flex items-center gap-3">
-            <div className={`flex-1 bg-white ${isSketch ? 'border-2 border-[#111111] rounded-2xl shadow-[3px_3px_0px_0px_rgba(17,17,17,1)]' : 'border border-[#E9E4DB] rounded-3xl shadow-xs'} p-4 relative`}>
+            <div className={`flex-1 border-2 p-4 relative shadow-sm ${
+              isSketch 
+                ? 'border-[#111111] bg-white rounded-2xl' 
+                : activeTheme === 'night'
+                ? 'border-slate-700 bg-[#242A3E] rounded-3xl text-slate-200'
+                : activeTheme === 'forest'
+                ? 'border-emerald-900/30 bg-[#2D3F35] rounded-3xl text-[#ECF2EF]'
+                : 'border-[#E9E4DB] bg-white rounded-3xl text-[#2C2A29]'
+            }`}>
               {/* Dialogue Bubble Tail */}
               {isSketch ? (
                 <>
@@ -413,14 +444,28 @@ export default function FocusPage({
                   <div className="absolute right-[-7px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[7px] border-t-transparent border-l-[9px] border-l-white border-b-[7px] border-b-transparent" />
                 </>
               ) : (
-                <div className="absolute right-[-8px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-l-[8px] border-l-white border-b-[6px] border-b-transparent filter drop-shadow-[1px_0_0_#E9E4DB]" />
+                <div className={`absolute right-[-8px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] ${
+                  activeTheme === 'night' 
+                    ? 'border-l-[#242A3E] filter drop-shadow-[1px_0_0_#334155]' 
+                    : activeTheme === 'forest' 
+                    ? 'border-l-[#2D3F35] filter drop-shadow-[1px_0_0_#064e3b]' 
+                    : 'border-l-white filter drop-shadow-[1px_0_0_#E9E4DB]'
+                }`} />
               )}
               
               <div className="space-y-0.5 text-left">
                 <span className="text-[9px] font-black uppercase tracking-wider opacity-75">
                   Companion {activeCompanion.name}
                 </span>
-                <p className="text-xs font-bold leading-normal italic">
+                <p className={`text-xs font-bold leading-normal italic ${
+                  isSketch 
+                    ? 'text-[#111111]' 
+                    : activeTheme === 'night' 
+                    ? 'text-white' 
+                    : activeTheme === 'forest' 
+                    ? 'text-[#ECF2EF]' 
+                    : 'text-[#111111]'
+                }`}>
                   "You've got this! I'm right here with you."
                 </p>
               </div>
@@ -436,7 +481,7 @@ export default function FocusPage({
           </div>
 
           {/* 5. Today's Focus Goal */}
-          <div className={`${isSketch ? 'border-2 border-[#111111] rounded-3xl shadow-[4px_4px_0px_0px_rgba(17,17,17,1)] bg-white' : 'border border-[#E9E4DB] rounded-3xl bg-white shadow-xs'} p-5 flex items-center justify-between gap-4`}>
+          <div className={`${isSketch ? 'border-2 border-[#111111] rounded-3xl shadow-[4px_4px_0px_0px_rgba(17,17,17,1)] bg-white' : styles.card} p-5 flex items-center justify-between gap-4`}>
             <div className="space-y-3 flex-1 text-left">
               <div>
                 <h4 className="text-xs font-black uppercase tracking-wider">
@@ -448,7 +493,7 @@ export default function FocusPage({
               </div>
 
               {/* Linear outline progress bar */}
-              <div className={`w-full h-3 bg-white ${isSketch ? 'border-2 border-[#111111]' : 'border border-[#E9E4DB]'} rounded-full overflow-hidden p-0.5`}>
+              <div className={`w-full h-3 ${isSketch ? 'bg-white border-2 border-[#111111]' : activeTheme === 'night' ? 'bg-[#181B28] border border-slate-700' : activeTheme === 'forest' ? 'bg-[#1A251F] border border-emerald-950/20' : 'bg-white border border-[#E9E4DB]'} rounded-full overflow-hidden p-0.5`}>
                 <div 
                   className={`h-full ${isSketch ? 'bg-[#111111]' : 'bg-[#8C9A86]'} rounded-full transition-all duration-500`} 
                   style={{ width: `${(completedSessions / goalSessions) * 100}%` }}
@@ -460,7 +505,7 @@ export default function FocusPage({
           </div>
 
           {/* 6. Focus Streak Tracker */}
-          <div className={`${isSketch ? 'border-2 border-[#111111] rounded-3xl bg-white shadow-[4px_4px_0px_0px_rgba(17,17,17,1)]' : 'border border-[#E9E4DB] rounded-3xl bg-white shadow-xs'} p-5 flex items-center justify-between gap-4 flex-1`}>
+          <div className={`${isSketch ? 'border-2 border-[#111111] rounded-3xl bg-white shadow-[4px_4px_0px_0px_rgba(17,17,17,1)]' : styles.card} p-5 flex items-center justify-between gap-4 flex-1`}>
             <div className="space-y-3 flex-1 text-left">
               <div className="flex items-center justify-between pr-2">
                 <div>
@@ -489,6 +534,10 @@ export default function FocusPage({
                             : 'bg-[#8C9A86] border-[#8C9A86] text-white text-[10px] font-black'
                           : isSketch 
                           ? 'bg-white border-[#111111] text-transparent'
+                          : activeTheme === 'night'
+                          ? 'bg-[#181B28] border-slate-700 text-transparent'
+                          : activeTheme === 'forest'
+                          ? 'bg-[#1C2822] border-emerald-950/20 text-transparent'
                           : 'bg-white border-[#E9E4DB] text-transparent'
                       }`}
                     >
@@ -517,9 +566,9 @@ export default function FocusPage({
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              className={`bg-white ${isSketch ? 'border-3 border-[#111111] shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]' : 'border border-[#E9E4DB] shadow-lg'} rounded-3xl p-6 max-w-sm w-full text-center space-y-4`}
+              className={`${isSketch ? 'border-3 border-[#111111] shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] bg-white text-[#111111]' : activeTheme === 'night' ? 'border border-slate-700 bg-[#1B1E2E] shadow-lg text-white' : activeTheme === 'forest' ? 'border border-emerald-950/20 bg-[#233029] shadow-lg text-white' : 'border border-[#E9E4DB] bg-white shadow-lg text-[#2C2A29]'} rounded-3xl p-6 max-w-sm w-full text-center space-y-4`}
             >
-              <div className={`w-20 h-20 mx-auto rounded-full bg-emerald-50 ${isSketch ? 'border-2 border-[#111111]' : 'border border-emerald-100'} flex items-center justify-center text-emerald-600`}>
+              <div className={`w-20 h-20 mx-auto rounded-full ${isSketch ? 'bg-white border-2 border-[#111111] text-[#111111]' : activeTheme === 'night' ? 'bg-slate-800 border border-slate-700 text-sky-400' : activeTheme === 'forest' ? 'bg-[#2D3F35] border border-emerald-900/30 text-emerald-400' : 'bg-emerald-50 border border-emerald-100 text-emerald-600'} flex items-center justify-center`}>
                 <Sparkles className="w-10 h-10 animate-pulse text-current" />
               </div>
 
@@ -530,7 +579,7 @@ export default function FocusPage({
                 </p>
               </div>
 
-              <div className={`p-3 rounded-2xl text-xs font-black ${isSketch ? 'bg-[#FAF8F5] border-2 border-dashed border-[#111111] text-[#111111]' : 'bg-[#FAF8EE] border border-dashed border-[#E3DEC9] text-[#8C9A86]'}`}>
+              <div className={`p-3 rounded-2xl text-xs font-black ${isSketch ? 'bg-[#FAF8F5] border-2 border-dashed border-[#111111] text-[#111111]' : activeTheme === 'night' ? 'bg-slate-800/50 border border-dashed border-slate-700 text-sky-400' : activeTheme === 'forest' ? 'bg-[#2D3F35]/50 border border-dashed border-emerald-900/30 text-emerald-400' : 'bg-[#FAF8EE] border border-dashed border-[#E3DEC9] text-[#8C9A86]'}`}>
                 🐾 Buddy rewarded you +150 Companion Bond XP!
               </div>
 

@@ -985,6 +985,7 @@ export default function App() {
                   bufferActive={bufferActive}
                   onRescheduleTasks={handleRescheduleTasks}
                   stats={chronotypeStats}
+                  activeTheme={activeTheme}
                 />
               )}
 

@@ -213,6 +213,29 @@ export default function CalendarPage({
       : activeTheme === 'lavender'
       ? "rounded-xl bg-[#F3EEFA] text-[#635B8F] border border-[#E2DAF2]"
       : "rounded-xl bg-[#FAF8F5] text-[#5D5750] border border-[#E9E4DB]", // minimal
+    innerCard: isSketch
+      ? "bg-white border-2 border-[#111111]"
+      : activeTheme === 'night'
+      ? "bg-[#242A3E] border border-slate-700 text-white"
+      : activeTheme === 'forest'
+      ? "bg-[#2D3F35] border border-emerald-900/30 text-[#ECF2EF]"
+      : activeTheme === 'lavender'
+      ? "bg-white border border-[#E9E4EB] text-[#3D3A45]"
+      : "bg-white border border-[#E9E4DB] text-[#2C2A29]",
+    innerBg: isSketch
+      ? "bg-gray-50"
+      : activeTheme === 'night'
+      ? "bg-[#181B28]"
+      : activeTheme === 'forest'
+      ? "bg-[#1C2822]"
+      : "bg-[#FAF8F5]",
+    iconBg: isSketch
+      ? "bg-white text-[#111111]"
+      : activeTheme === 'night'
+      ? "bg-slate-800 text-white border border-slate-700"
+      : activeTheme === 'forest'
+      ? "bg-[#314339] text-[#ECF2EF]"
+      : "bg-white border border-[#E9E4DB]",
     input: isSketch
       ? "bg-white border-2 border-[#111111] rounded-xl px-2.5 py-1.5 focus:outline-none focus:bg-gray-50 text-[#111111]"
       : activeTheme === 'night'
@@ -233,7 +256,7 @@ export default function CalendarPage({
       {/* Dynamic Header */}
       <div className={`${isSketch ? 'border-2 border-[#111111] rounded-2xl bg-white p-4 shadow-[3px_3px_0px_0px_rgba(17,17,17,1)]' : styles.card} flex items-center justify-between shrink-0`}>
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl' : 'rounded-2xl border border-[#E9E4DB]'} bg-white flex items-center justify-center font-bold text-lg shadow-xs`}>
+          <div className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl' : 'rounded-2xl'} ${styles.iconBg} flex items-center justify-center font-bold text-lg shadow-xs`}>
             <CalendarIcon className="w-5 h-5 text-current" />
           </div>
           <div>
@@ -255,7 +278,7 @@ export default function CalendarPage({
           >
             <Plus className="w-3.5 h-3.5" /> Event
           </button>
-          <div className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl' : 'rounded-2xl border border-[#E9E4DB]'} bg-white flex items-center justify-center cursor-pointer shadow-xs`}>
+          <div className={`w-10 h-10 ${isSketch ? 'border-2 border-[#111111] rounded-xl' : 'rounded-2xl'} ${styles.iconBg} flex items-center justify-center cursor-pointer shadow-xs`}>
             <Bell className="w-5 h-5" />
           </div>
         </div>
@@ -271,7 +294,7 @@ export default function CalendarPage({
                 <div className={`flex items-center justify-between border-b-2 border-dashed pb-2 ${isSketch ? 'border-[#111111]' : 'border-gray-200'}`}>
                   <button 
                     onClick={handlePrevMonth}
-                    className={`w-7 h-7 border-2 font-black text-xs flex items-center justify-center hover:bg-gray-100 transition-colors ${isSketch ? 'border-[#111111] rounded-lg bg-white' : 'border-[#E9E4DB] rounded-lg bg-white'}`}
+                    className={`w-7 h-7 border-2 font-black text-xs flex items-center justify-center transition-colors ${isSketch ? 'border-[#111111] rounded-lg bg-white hover:bg-gray-100 text-[#111111]' : activeTheme === 'night' ? 'border-slate-700 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200' : activeTheme === 'forest' ? 'border-emerald-950/20 rounded-lg bg-[#314339] hover:bg-[#3a5043] text-[#ECF2EF]' : 'border-[#E9E4DB] rounded-lg bg-white hover:bg-gray-100 text-gray-700'}`}
                   >
                     &lt;
                   </button>
@@ -280,7 +303,7 @@ export default function CalendarPage({
                   </h3>
                   <button 
                     onClick={handleNextMonth}
-                    className={`w-7 h-7 border-2 font-black text-xs flex items-center justify-center hover:bg-gray-100 transition-colors ${isSketch ? 'border-[#111111] rounded-lg bg-white' : 'border-[#E9E4DB] rounded-lg bg-white'}`}
+                    className={`w-7 h-7 border-2 font-black text-xs flex items-center justify-center transition-colors ${isSketch ? 'border-[#111111] rounded-lg bg-white hover:bg-gray-100 text-[#111111]' : activeTheme === 'night' ? 'border-slate-700 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200' : activeTheme === 'forest' ? 'border-emerald-950/20 rounded-lg bg-[#314339] hover:bg-[#3a5043] text-[#ECF2EF]' : 'border-[#E9E4DB] rounded-lg bg-white hover:bg-gray-100 text-gray-700'}`}
                   >
                     &gt;
                   </button>
@@ -365,7 +388,7 @@ export default function CalendarPage({
                   <div className="grid grid-cols-7 gap-1.5">
                     {/* Offset blanks */}
                     {Array.from({ length: startOffset }).map((_, i) => (
-                      <div key={`blank-${i}`} className={`h-10 rounded-xl border border-transparent ${isSketch ? 'bg-gray-50' : 'bg-[#FAF8F5]/40'}`} />
+                      <div key={`blank-${i}`} className={`h-10 rounded-xl border border-transparent ${isSketch ? 'bg-gray-50' : activeTheme === 'night' ? 'bg-slate-800/40' : activeTheme === 'forest' ? 'bg-[#1C2822]/40' : 'bg-[#FAF8F5]/40'}`} />
                     ))}
 
                     {/* Actual days */}
@@ -388,7 +411,11 @@ export default function CalendarPage({
                                 : 'bg-[#8C9A86] border-[#8C9A86] text-white font-black scale-98 shadow-sm'
                               : isSketch
                               ? 'bg-white border-[#111111] hover:bg-gray-50 text-[#111111] font-bold'
-                              : 'bg-white border-[#E9E4DB] hover:bg-[#FAF8F5] text-current font-bold'
+                              : activeTheme === 'night'
+                              ? 'bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200 font-bold'
+                              : activeTheme === 'forest'
+                              ? 'bg-[#2D3F35] border-emerald-900/30 hover:bg-[#3d5547] text-[#ECF2EF] font-bold'
+                              : 'bg-white border-[#E9E4DB] hover:bg-[#FAF8F5] text-[#2C2A29] font-bold'
                           }`}
                         >
                           <span className="text-[10px]">{dayNum}</span>
@@ -428,7 +455,7 @@ export default function CalendarPage({
                   ) : (
                     <div className="space-y-1.5">
                       {getEventsForDay(selectedDay).map(ev => (
-                        <div key={ev.id} className={`flex items-center justify-between border rounded-xl px-3 py-2 text-xs bg-[#FAF8F5] ${isSketch ? 'border-[#111111]' : 'border-[#E9E4DB]'}`}>
+                        <div key={ev.id} className={`flex items-center justify-between border rounded-xl px-3 py-2 text-xs ${isSketch ? 'border-[#111111] bg-[#FAF8F5]' : activeTheme === 'night' ? 'bg-[#242A3E] border-slate-700' : activeTheme === 'forest' ? 'bg-[#2D3F35] border-emerald-900/30' : 'bg-[#FAF8F5] border-[#E9E4DB]'}`}>
                           <div className="flex items-center gap-2">
                             {ev.type === 'birthday' && <Gift className="w-4 h-4 text-pink-500" />}
                             {ev.type === 'anniversary' && <Heart className="w-4 h-4 text-amber-500" />}
@@ -449,21 +476,43 @@ export default function CalendarPage({
               
               {/* Mascot Bubble */}
               <div className="flex items-center gap-3">
-                <div className={`flex-1 bg-white border-2 p-4 relative shadow-sm ${isSketch ? 'border-[#111111] rounded-2xl' : 'border-[#E9E4DB] rounded-3xl'}`}>
+                <div className={`flex-1 border-2 p-4 relative shadow-sm ${
+                  isSketch 
+                    ? 'border-[#111111] bg-white rounded-2xl' 
+                    : activeTheme === 'night'
+                    ? 'border-slate-700 bg-[#242A3E] rounded-3xl text-slate-200'
+                    : activeTheme === 'forest'
+                    ? 'border-emerald-900/30 bg-[#2D3F35] rounded-3xl text-[#ECF2EF]'
+                    : 'border-[#E9E4DB] bg-white rounded-3xl text-[#2C2A29]'
+                }`}>
                   {isSketch ? (
                     <>
                       <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[8px] border-t-transparent border-l-[10px] border-l-[#111111] border-b-[8px] border-b-transparent" />
                       <div className="absolute right-[-7px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[7px] border-t-transparent border-l-[9px] border-l-white border-b-[7px] border-b-transparent" />
                     </>
                   ) : (
-                    <div className="absolute right-[-8px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-l-[8px] border-l-white border-b-[6px] border-b-transparent filter drop-shadow-[1px_0_0_#E9E4DB]" />
+                    <div className={`absolute right-[-8px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] ${
+                      activeTheme === 'night' 
+                        ? 'border-l-[#242A3E] filter drop-shadow-[1px_0_0_#334155]' 
+                        : activeTheme === 'forest' 
+                        ? 'border-l-[#2D3F35] filter drop-shadow-[1px_0_0_#064e3b]' 
+                        : 'border-l-white filter drop-shadow-[1px_0_0_#E9E4DB]'
+                    }`} />
                   )}
                   
                   <div className="space-y-0.5 text-left">
                     <span className="text-[9px] font-black text-gray-500 uppercase tracking-wider block">
                       Companion {activeCompanion.name}
                     </span>
-                    <p className="text-xs font-bold leading-normal italic text-[#111111]">
+                    <p className={`text-xs font-bold leading-normal italic ${
+                      isSketch 
+                        ? 'text-[#111111]' 
+                        : activeTheme === 'night' 
+                        ? 'text-white' 
+                        : activeTheme === 'forest' 
+                        ? 'text-[#ECF2EF]' 
+                        : 'text-[#111111]'
+                    }`}>
                       "Good morning! You've got {tasks.filter(t => !t.completed).length} tasks today. Let's go! ✨"
                     </p>
                   </div>
@@ -580,7 +629,7 @@ export default function CalendarPage({
                       return (
                         <div 
                           key={task.id} 
-                          className={`border-2 rounded-2xl p-3.5 bg-white transition-all shadow-xs ${isSketch ? 'border-[#111111] shadow-[2px_2px_0px_0px_rgba(17,17,17,1)]' : 'border-[#E9E4DB]'} ${
+                          className={`border-2 rounded-2xl p-3.5 transition-all shadow-xs ${isSketch ? 'border-[#111111] bg-white shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] text-[#111111]' : activeTheme === 'night' ? 'bg-[#242A3E] border-slate-700 text-white' : activeTheme === 'forest' ? 'bg-[#2D3F35] border-emerald-900/30 text-[#ECF2EF]' : 'bg-white border-[#E9E4DB] text-[#2C2A29]'} ${
                             task.completed ? 'opacity-65' : ''
                           }`}
                         >
@@ -591,7 +640,7 @@ export default function CalendarPage({
                                 className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${isSketch ? 'border-[#111111]' : 'border-[#8C9A86]'} ${
                                   task.completed 
                                     ? isSketch ? 'bg-[#111111] text-white' : 'bg-[#8C9A86] text-white' 
-                                    : 'bg-white text-transparent'
+                                    : 'bg-transparent text-transparent'
                                 }`}
                               >
                                 ✓
@@ -613,7 +662,7 @@ export default function CalendarPage({
                             </div>
 
                             <div className="flex items-center gap-1.5 shrink-0">
-                              <span className={`border-2 text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-white ${isSketch ? 'border-[#111111]' : 'border-gray-200'}`}>
+                              <span className={`border-2 text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${isSketch ? 'border-[#111111] bg-white text-[#111111]' : activeTheme === 'night' ? 'bg-slate-800 border-slate-700 text-slate-300' : activeTheme === 'forest' ? 'bg-emerald-950/20 border-emerald-900/30 text-emerald-300' : 'bg-white border-gray-200 text-gray-500'}`}>
                                 {task.energyCost === 'high' ? 'Study' : task.energyCost === 'medium' ? 'Work' : 'Personal'}
                               </span>
 
@@ -621,7 +670,7 @@ export default function CalendarPage({
                                 onClick={() => onDeconstructTask(task.id)}
                                 disabled={deconstructLoadingId === task.id}
                                 title="Deconstruct overlap"
-                                className={`w-7 h-7 border rounded-lg flex items-center justify-center cursor-pointer ${isSketch ? 'border-2 border-[#111111] bg-white' : 'border-[#E9E4DB] bg-white'}`}
+                                className={`w-7 h-7 border rounded-lg flex items-center justify-center cursor-pointer ${isSketch ? 'border-2 border-[#111111] bg-white text-[#111111]' : activeTheme === 'night' ? 'border-slate-700 bg-slate-800 text-white hover:bg-slate-700' : activeTheme === 'forest' ? 'border-emerald-900/30 bg-[#314339] text-[#ECF2EF] hover:bg-[#3a5043]' : 'border-[#E9E4DB] bg-white hover:bg-gray-50 text-[#5D5750]'}`}
                               >
                                 {deconstructLoadingId === task.id ? (
                                   <div className="w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin border-current" />
@@ -632,7 +681,15 @@ export default function CalendarPage({
 
                               <button 
                                 onClick={() => onDeleteTask(task.id)}
-                                className="w-7 h-7 border border-red-200 text-red-500 hover:bg-red-50 rounded-lg flex items-center justify-center cursor-pointer"
+                                className={`w-7 h-7 border rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
+                                  isSketch 
+                                    ? 'border-2 border-[#111111] bg-white text-red-500 hover:bg-red-50' 
+                                    : activeTheme === 'night' 
+                                    ? 'border-red-900/40 text-red-400 bg-red-950/20 hover:bg-red-950/40' 
+                                    : activeTheme === 'forest' 
+                                    ? 'border-red-900/40 text-red-400 bg-red-950/20 hover:bg-red-950/40' 
+                                    : 'border-red-200 text-red-500 bg-white hover:bg-red-50'
+                                }`}
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -641,7 +698,7 @@ export default function CalendarPage({
 
                           {/* Expandable nested micro-steps */}
                           {hasSubtasks && (
-                            <div className={`mt-3.5 border-t-2 border-dashed pt-3.5 space-y-3 bg-[#FAF8F5] p-2.5 rounded-xl ${isSketch ? 'border-[#111111]' : 'border-[#E9E4DB]'}`}>
+                            <div className={`mt-3.5 border-t-2 border-dashed pt-3.5 space-y-3 p-2.5 rounded-xl ${isSketch ? 'border-[#111111] bg-[#FAF8F5]' : activeTheme === 'night' ? 'border-slate-700 bg-[#181B28]' : activeTheme === 'forest' ? 'border-emerald-900/20 bg-[#1C2822]' : 'border-[#E9E4DB] bg-[#FAF8F5]'}`}>
                               <div className="flex items-center justify-between">
                                 <span className="text-[9px] font-black uppercase text-gray-500">
                                   Nested Operation Tree ({completedSteps}/{totalSteps})
@@ -654,7 +711,7 @@ export default function CalendarPage({
                               <div className="space-y-3">
                                 {deconstructed?.structure.map((phase, pIdx) => (
                                   <div key={phase.id || pIdx} className="space-y-1.5">
-                                    <div className={`text-[10px] font-black uppercase border-b pb-0.5 ${isSketch ? 'border-[#111111]' : 'border-gray-200'}`}>
+                                    <div className={`text-[10px] font-black uppercase border-b pb-0.5 ${isSketch ? 'border-[#111111]' : activeTheme === 'night' ? 'border-slate-800' : activeTheme === 'forest' ? 'border-emerald-950/20' : 'border-gray-200'}`}>
                                       Phase {pIdx + 1}: {phase.phaseName}
                                     </div>
                                     {phase.tasks.map((st, sIdx) => (
@@ -668,7 +725,7 @@ export default function CalendarPage({
                                                 className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 text-[10px] ${isSketch ? 'border-[#111111]' : 'border-[#8C9A86]'} ${
                                                   step.completed 
                                                     ? isSketch ? 'bg-[#111111] text-white' : 'bg-[#8C9A86] text-white' 
-                                                    : 'bg-white text-transparent'
+                                                    : 'bg-transparent text-transparent'
                                                 }`}
                                               >
                                                 ✓
