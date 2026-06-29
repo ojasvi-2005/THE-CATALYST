@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CompanionMascot } from '../types';
 import MascotDrawing from './MascotDrawing';
@@ -58,13 +58,50 @@ export default function ProfilePage({
   const [nameInput, setNameInput] = useState(userName);
   const [isDragging, setIsDragging] = useState(false);
   const [urlInput, setUrlInput] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processFile = (file: File) => {
     if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
-      if (dataUrl) onUpdateUserProfilePic(dataUrl);
+      if (!dataUrl) return;
+
+      // Create an image element to get dimensions and resize
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        // Resize the profile pic to a standard 128x128px to save localStorage quota
+        const maxDim = 128;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          }
+        } else {
+          if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          // Compress to JPEG with 0.8 quality
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          onUpdateUserProfilePic(compressedDataUrl);
+        } else {
+          // Fallback if canvas context is not available
+          onUpdateUserProfilePic(dataUrl);
+        }
+      };
+      img.src = dataUrl;
     };
     reader.readAsDataURL(file);
   };
@@ -90,6 +127,11 @@ export default function ProfilePage({
     if (e.target.files && e.target.files[0]) {
       processFile(e.target.files[0]);
     }
+  };
+
+  const handleContainerClick = (e: React.MouseEvent) => {
+    if (e.target === fileInputRef.current) return;
+    fileInputRef.current?.click();
   };
 
   useEffect(() => {
@@ -471,8 +513,20 @@ export default function ProfilePage({
 
                       {/* Profile Picture drag drop upload */}
                       <div className={`space-y-1 pt-2 border-t border-dashed ${isSketch ? 'border-[#111111]' : 'border-gray-100'}`}>
-                        <label className="text-[10px] font-black uppercase text-gray-500 block">Avatar Image</label>
+                        <div className="flex justify-between items-center mb-1">
+                          <label className="text-[10px] font-black uppercase text-gray-500 block">Avatar Image</label>
+                          {userProfilePic && (
+                            <button
+                              type="button"
+                              onClick={() => onUpdateUserProfilePic(null)}
+                              className="text-[10px] text-red-500 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                            >
+                              <Trash2 className="w-3 h-3" /> Remove Pic
+                            </button>
+                          )}
+                        </div>
                         <div 
+                          onClick={handleContainerClick}
                           onDragOver={handleDragOver}
                           onDragLeave={handleDragLeave}
                           onDrop={handleDrop}
@@ -482,19 +536,22 @@ export default function ProfilePage({
                               : isSketch ? 'bg-[#FAF8F5] border-[#111111]/30 hover:border-[#111111]' : 'bg-white border-[#E9E4DB] hover:border-gray-400'
                           }`}
                         >
-                          <div className="space-y-1">
+                          <div className="space-y-1 pointer-events-none">
                             <Upload className="w-5 h-5 mx-auto text-current" />
-                            <p className="text-[10px] font-black text-gray-600">Drag profile pic here or browse</p>
+                            <p className="text-[10px] font-black text-gray-600">
+                              {userProfilePic ? "Click or drag to change profile pic" : "Drag profile pic here or browse"}
+                            </p>
                             <input 
+                              ref={fileInputRef}
                               type="file" 
                               accept="image/*" 
                               onChange={handleFileInputChange} 
                               className="hidden" 
                               id="avatar-file-upload" 
                             />
-                            <label htmlFor="avatar-file-upload" className="text-[9px] font-black hover:underline block mt-1 cursor-pointer">
+                            <span className="text-[9px] font-black hover:underline block mt-1 cursor-pointer">
                               Select from computer
-                            </label>
+                            </span>
                           </div>
                         </div>
                       </div>
