@@ -1,20 +1,2 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
-
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/87cbd2a2-e2db-447d-9a7a-72e5daa75e80
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Catalyst AI is like a cozy, supportive co-pilot for your brain, designed to help you turn overwhelming projects into a gentle, human-friendly plan. When your head is spinning with a messy, middle-of-the-night brain dump, it steps in to sort through the chaos, organizing your thoughts into clear tasks based on how much energy you actually have left. It elegantly chops massive, scary goals into tiny 5-to-15 minute micro-steps so you always know exactly where to start, while automatically building in restorative breathing room right after demanding tasks to keep you from hitting a wall. To make the workday a bit warmer, a cute digital companion lives right on your screen to match your mood, celebrate your wins, and chat with you as a gentle coach whenever you need focus strategies or a quick motivational push. It's completely built to have your back—leveraging Google's Gemini API for smart insights, but including a seamless offline mode that works right out of the box without needing an internet connection or an API key to lighten your mental load.
+Access the application here: https://the-catalyst-790426018346.asia-southeast1.run.app
