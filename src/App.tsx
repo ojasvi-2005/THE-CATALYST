@@ -11,6 +11,12 @@ import CompanionChat from './components/CompanionChat';
 import TaskTree from './components/TaskTree';
 import Companion from './components/Companion';
 
+// Static assets imported as ES modules to compile with Vite
+import pixelCatImg from './assets/images/pixel_cat_companion_1782385652283.jpg';
+import foxyImg from './assets/images/fox_companion_friend_1782385667174.jpg';
+import biscuitImg from './assets/images/biscuit_avatar_1782381164224.jpg';
+import mochiImg from './assets/images/rabbit_companion_friend_1782385698353.jpg';
+
 import { 
   Calendar as CalendarIcon, 
   Target, 
@@ -58,28 +64,28 @@ export default function App() {
       id: 'mascot-1',
       name: 'Pixel',
       species: 'Kitten Mascot',
-      imageUrl: '/src/assets/images/pixel_cat_companion_1782385652283.jpg',
+      imageUrl: pixelCatImg,
       description: 'A cozy chubby white cat who sits calmly on your desk and purrs when you complete tasks.'
     },
     {
       id: 'mascot-2',
       name: 'Foxy',
       species: 'Fox Friend',
-      imageUrl: '/src/assets/images/fox_companion_friend_1782385667174.jpg',
+      imageUrl: foxyImg,
       description: 'A playful red fox full of energetic encouragement and high-fives!'
     },
     {
       id: 'mascot-3',
       name: 'Biscuit',
       species: 'Cozy Puppy',
-      imageUrl: '/src/assets/images/biscuit_avatar_1782381164224.jpg',
+      imageUrl: biscuitImg,
       description: 'Your loyal operational sidekick who executes celebration flips when goals are hit.'
     },
     {
       id: 'mascot-4',
       name: 'Mochi',
       species: 'White Rabbit',
-      imageUrl: '/src/assets/images/rabbit_companion_friend_1782385698353.jpg',
+      imageUrl: mochiImg,
       description: 'A quiet, calm little rabbit who loves to watch you work in complete silence.'
     }
   ]);

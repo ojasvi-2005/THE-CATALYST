@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Coffee, Heart, Smile } from 'lucide-react';
 
+// Static assets imported as ES modules to compile with Vite
+import biscuitAvatarImg from '../assets/images/biscuit_avatar_1782381164224.jpg';
+import biscuitSleepingImg from '../assets/images/biscuit_sleeping_1782381180640.jpg';
+
 interface CompanionProps {
   mood: 'happy' | 'sleeping' | 'celebrating';
   message: string;
@@ -25,8 +29,8 @@ export default function Companion({ mood, message, onWakeUp }: CompanionProps) {
   }, [mood, message]);
 
   // Mascot image URLs from assets
-  const happyUrl = "/src/assets/images/biscuit_avatar_1782381164224.jpg";
-  const sleepingUrl = "/src/assets/images/biscuit_sleeping_1782381180640.jpg";
+  const happyUrl = biscuitAvatarImg;
+  const sleepingUrl = biscuitSleepingImg;
 
   return (
     <div id="biscuit-companion" className="relative flex items-center gap-4 bg-[#FFFDF9] border border-[#E9E4DB] rounded-3xl p-5 shadow-sm max-w-xl mx-auto mb-6">
