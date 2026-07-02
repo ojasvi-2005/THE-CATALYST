@@ -244,8 +244,17 @@ export default function CompanionChat({
                     ) : (
                       <UserIcon className="w-4 h-4" />
                     )
+                  ) : activeCompanion.svgMarkup ? (
+                    <div 
+                      className="w-full h-full p-1 [&>svg]:w-full [&>svg]:h-full"
+                      dangerouslySetInnerHTML={{ __html: activeCompanion.svgMarkup }}
+                    />
                   ) : (
-                    <Bot className="w-4 h-4" />
+                    <img 
+                      src={activeCompanion.imageUrl} 
+                      alt={activeCompanion.name} 
+                      className="w-full h-full object-cover"
+                    />
                   )}
                 </div>
 
@@ -269,8 +278,19 @@ export default function CompanionChat({
           {/* Loading Indicator */}
           {isLoading && (
             <div className="flex gap-3 items-start">
-              <div className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center border bg-white border-[#E9E4DB] text-[#5D5750]">
-                <Bot className="w-4 h-4 animate-pulse" />
+              <div className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center border bg-white border-[#E9E4DB] text-[#5D5750] overflow-hidden">
+                {activeCompanion.svgMarkup ? (
+                  <div 
+                    className="w-full h-full p-1 [&>svg]:w-full [&>svg]:h-full"
+                    dangerouslySetInnerHTML={{ __html: activeCompanion.svgMarkup }}
+                  />
+                ) : (
+                  <img 
+                    src={activeCompanion.imageUrl} 
+                    alt={activeCompanion.name} 
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               <div className="bg-white border border-[#E9E4DB] rounded-2xl rounded-tl-none px-4 py-3 shadow-2xs flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#8C9A86] animate-bounce" style={{ animationDelay: '0ms' }} />

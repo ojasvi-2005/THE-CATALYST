@@ -287,7 +287,7 @@ app.get("/api/health", async (req, res) => {
     }
 
     await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: "Say ok",
     });
 
@@ -341,7 +341,7 @@ OUTPUT FORMAT (JSON only):
 }`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: `Parse this brain-dump:\n\n${text.trim()}`,
       config: {
         systemInstruction: systemPrompt,
@@ -429,7 +429,7 @@ OUTPUT FORMAT (JSON only):
 }`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: `Project: ${projectTitle}\n\nDescription:\n${projectDescription.trim()}`,
       config: {
         systemInstruction: systemPrompt,
@@ -497,7 +497,7 @@ OUTPUT FORMAT (JSON):
 }`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: `Create a cute mascot based on: ${animalName.trim()}`,
       config: {
         systemInstruction: systemPrompt,
@@ -535,6 +535,69 @@ OUTPUT FORMAT (JSON):
 });
 
 // 5. Companion Chat
+function generateOfflineReply(message: string, companionName: string, companionSpecies: string): string {
+  const lower = (message || "").toLowerCase();
+  
+  if (lower.includes("scientific") || lower.includes("tip") || lower.includes("phone") || lower.includes("focus")) {
+    return `According to cognitive science, the single best tip to maintain focus and avoid checking your phone is **"Visual & Physical Friction" (Out of Sight, Out of Mind)**.
+
+Research from the University of Texas at Austin shows that the mere presence of your smartphone on your desk—even if it is turned off or face down—drains cognitive capacity. Your brain must actively expend energy to resist checking it.
+
+**Actionable Steps:**
+1. **Physical Distance**: Place your phone in another room or inside a closed bag.
+2. **Greyscale Mode**: Turn your screen grey to reduce the dopamine reward loop of colorful icons.
+3. **App Blockers**: Use a deep focus app or a session blocker to restrict tempting notifications.
+
+*(Note: I am running in local mode! To enable dynamic AI generation similar to ChatGPT, make sure to configure your GEMINI_API_KEY in the settings!)*`;
+  }
+  
+  if (lower.includes("plan") || lower.includes("afternoon") || lower.includes("hour") || lower.includes("schedule")) {
+    return `Here is a highly effective 3-hour study plan based on the **Pomodoro Technique** and **Interval Training**:
+
+• **Hour 1: High Energy Task (Deep Work)**
+  - 50 mins: Focus on your most challenging task (no distractions).
+  - 10 mins: True break (stand up, stretch, drink water).
+
+• **Hour 2: Medium Focus Task (Deconstruction)**
+  - 25 mins: Review tasks and break them into micro-steps.
+  - 5 mins: Short break.
+  - 25 mins: Solve tasks or write drafts.
+  - 5 mins: Short break.
+
+• **Hour 3: Lower Energy Task (Review & Clean-up)**
+  - 50 mins: Email, organizing, or light review of the day's notes.
+  - 10 mins: Wrap up and plan tomorrow.
+
+*(Note: I am running in local mode! To enable dynamic AI generation similar to ChatGPT, make sure to configure your GEMINI_API_KEY in the settings!)*`;
+  }
+  
+  if (lower.includes("overwhelmed") || lower.includes("stress") || lower.includes("decompress") || lower.includes("exercise")) {
+    return `Let's take a 2-minute decompression break together. Follow these simple steps:
+
+1. **Box Breathing (4-4-4-4)**:
+   - Inhale deeply through your nose for 4 seconds.
+   - Hold your breath for 4 seconds.
+   - Exhale slowly through your mouth for 4 seconds.
+   - Hold empty for 4 seconds.
+   - *Repeat this cycle 3 times.*
+
+2. **Physical Release**:
+   - Drop your shoulders away from your ears.
+   - Unclench your jaw.
+   - Soften your eyes.
+
+Remember, you don't have to finish everything right now. Just focus on the next small step.
+
+*(Note: I am running in local mode! To enable dynamic AI generation similar to ChatGPT, make sure to configure your GEMINI_API_KEY in the settings!)*`;
+  }
+  
+  return `Hi there! I am ${companionName || "Pixel"}, your study buddy! 
+
+I'm currently running in offline/local mode. To enjoy fully dynamic, conversational AI answers (similar to ChatGPT or Gemini), please configure your **GEMINI_API_KEY** in the environment settings!
+
+In the meantime, I am right here with you to keep you company and support your focus. Feel free to use the quick prompts below to get scientifically backed tips and exercises!`;
+}
+
 app.post("/api/gemini/chat", simpleRateLimit, async (req, res) => {
   try {
     const { message, history, companionName, companionSpecies } = req.body;
@@ -576,10 +639,8 @@ app.post("/api/gemini/chat", simpleRateLimit, async (req, res) => {
     const ai = getGeminiClient();
 
     if (!ai) {
-      return res.json({
-        reply:
-          "I'm in offline mode! Please configure your GEMINI_API_KEY to chat with me.",
-      });
+      const fallbackReply = generateOfflineReply(message, companionName, companionSpecies);
+      return res.json({ reply: fallbackReply });
     }
 
     const systemPrompt = `You are ${companionName || "Pixel"}, a supportive study buddy mascot. Your species is ${companionSpecies || "Kitten"}.
@@ -599,7 +660,7 @@ Help with focus strategies, task planning, time management, and positive encoura
     contents.push({ role: "user", parts: [{ text: message.trim() }] });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: contents,
       config: {
         systemInstruction: systemPrompt,
@@ -610,10 +671,16 @@ Help with focus strategies, task planning, time management, and positive encoura
     res.json({ reply: response.text || "I'm listening!" });
   } catch (error) {
     console.error("Companion chat failed:", error);
-    res.status(500).json({
-      error: "Internal server error",
-      code: "SERVER_ERROR",
-    });
+    try {
+      const { message, companionName, companionSpecies } = req.body;
+      const fallbackReply = generateOfflineReply(message || "", companionName || "Pixel", companionSpecies || "Kitten");
+      return res.json({ reply: fallbackReply });
+    } catch (fallbackError) {
+      return res.status(500).json({
+        error: "Internal server error",
+        code: "SERVER_ERROR",
+      });
+    }
   }
 });
 
